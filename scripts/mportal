@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-MARIO_LINK=$(~/sh/scripts/mario_link)
+MARIO_LINK=$(~/.mario_link)
 SEND="s"
 SEND2="send"
 SEND_COMMAD=""
@@ -40,7 +40,6 @@ msend (){
 
 mget (){
   if [[ ONLY_ONE -eq 1 ]]; then
-    echo here
     GET_COMMAND="${GET_COMMAND}${REMOTE_LINK}/${FILE_NAME}${CURR_DIR}"
     printf "running command: \n\t${GET_COMMAND}\n"
     eval $GET_COMMAND
@@ -60,7 +59,7 @@ mget (){
 }
 
 if [[ "$#" < "$NUM_OPS" ]]; then
-  echo -n "Enter file name:"
+  echo -n "Enter file name: "
   read FILE_NAME
   ONLY_ONE=1
 fi

@@ -1,0 +1,79 @@
+#!/bin/zsh
+
+MARIO_LINK=$(~/sh/scripts/mario_link)
+SEND="s"
+SEND2="send"
+SEND_COMMAD=""
+SEND_PREFIX="scp -r "
+GET="g"
+GET2="get"
+GET_COMMAND="scp -r"
+REMOTE_DIR=$2
+REMOTE_LINK=" ${MARIO_LINK}:~/EE460N/${REMOTE_DIR}"
+CURR_DIR=" ./"
+args=("$@")
+NUM_ARGS=$#
+NUM_OPS=3
+FILE_NAME=""
+ONLY_ONE=0
+
+msend (){
+  if [[ ONLY_ONE -eq 1 ]]; then
+    SEND_COMMAD="${SEND_PREFIX}${CURR_DIR}${FILE_NAME}${REMOTE_LINK}"
+    printf "running command: \n\t${SEND_COMMAD}\n"
+    eval $SEND_COMMAD
+    exit $?
+  fi
+
+  SEND_COMMAD="${SEND_PREFIX}${SEND_COMMAD}"
+
+  for ((i=$NUM_OPS; i<=$NUM_ARGS; i++))
+  do
+    file=${args[$i]}
+    SEND_COMMAD="${SEND_COMMAD}${CURR_DIR}${file}"
+  done
+
+  SEND_COMMAD="${SEND_COMMAD}${REMOTE_LINK}/"
+  printf "running command: \n\t${SEND_COMMAD}\n"
+  eval $SEND_COMMAD
+}
+
+mget (){
+  if [[ ONLY_ONE -eq 1 ]]; then
+    echo here
+    GET_COMMAND="${GET_COMMAND}${REMOTE_LINK}/${FILE_NAME}${CURR_DIR}"
+    printf "running command: \n\t${GET_COMMAND}\n"
+    eval $GET_COMMAND
+    exit $?
+  fi
+
+  for (( i=$NUM_OPS; i <= $NUM_ARGS; i++ ))
+  do
+    file=${args[$i]}
+    GET_COMMAND="${GET_COMMAND}${REMOTE_LINK}/${file}"
+  done
+
+  GET_COMMAND="${GET_COMMAND}${CURR_DIR}"
+
+  printf "running command: \n\t${GET_COMMAND}\n"
+  eval ${GET_COMMAND}
+}
+
+if [[ "$#" < "$NUM_OPS" ]]; then
+  echo -n "Enter file name:"
+  read FILE_NAME
+  ONLY_ONE=1
+fi
+
+
+
+if [[ ($1 == ${SEND}  || $1 == ${SEND2}) ]]; then
+  msend
+  exit $?
+elif [[ ($1 == ${GET} || $1 == ${GET2}) ]]; then
+  mget
+  exit $?
+else
+  echo "Invalid operation requested."
+  exit 1
+fi

@@ -14,13 +14,14 @@ CURR_DIR=" ./"
 args=("$@")
 NUM_ARGS=$#
 NUM_OPS=3
+NUM_WITHOUT_OPS=2
 FILE_NAME=""
 ONLY_ONE=0
 
 msend (){
   if [[ ONLY_ONE -eq 1 ]]; then
     SEND_COMMAD="${SEND_PREFIX}${CURR_DIR}${FILE_NAME}${REMOTE_LINK}"
-    printf "running command: \n\t${SEND_COMMAD}\n"
+    printf "Performing \`${SEND_COMMAD}\`\n"
     eval $SEND_COMMAD
     exit $?
   fi
@@ -34,14 +35,14 @@ msend (){
   done
 
   SEND_COMMAD="${SEND_COMMAD}${REMOTE_LINK}/"
-  printf "running command: \n\t${SEND_COMMAD}\n"
+  printf "Performing \`${SEND_COMMAD}\`\n"
   eval $SEND_COMMAD
 }
 
 mget (){
   if [[ ONLY_ONE -eq 1 ]]; then
     GET_COMMAND="${GET_COMMAND}${REMOTE_LINK}/${FILE_NAME}${CURR_DIR}"
-    printf "running command: \n\t${GET_COMMAND}\n"
+    printf "Performing \`${GET_COMMAND}\`\n"
     eval $GET_COMMAND
     exit $?
   fi
@@ -54,16 +55,22 @@ mget (){
 
   GET_COMMAND="${GET_COMMAND}${CURR_DIR}"
 
-  printf "running command: \n\t${GET_COMMAND}\n"
+  printf "Performing \`${GET_COMMAND}\`\n"
   eval ${GET_COMMAND}
 }
+
+if [[ "$#" < "$NUM_WITHOUT_OPS" ]]; then
+  echo -n "Enter remote directory: "
+  read REMOTE_DIR
+  REMOTE_LINK=" ${MARIO_LINK}:~/EE460N/${REMOTE_DIR}"
+  ONLY_ONE=1
+fi
 
 if [[ "$#" < "$NUM_OPS" ]]; then
   echo -n "Enter file name: "
   read FILE_NAME
   ONLY_ONE=1
 fi
-
 
 
 if [[ ($1 == ${SEND}  || $1 == ${SEND2}) ]]; then

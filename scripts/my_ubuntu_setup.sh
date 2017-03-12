@@ -57,6 +57,10 @@ chsh -s $(which zsh) && printf "${grn}[PASS]${nrml} Made oh my zsh! default shel
 printf "${blu}[INFO]${nrml} installing htop...\n"
 sudo apt install htop && printf "${grn}[PASS]${nrml} Installed htop\n" || printf "${red}[FAIL]${nrml} Could not install htop\n"
 
+#Set synclient settings
+printf "${blu}[INFO]${nrml} setting up synclient configurations...\n"
+touch /home/aria/touchpad.sh && chmod +x /home/aria/touchpad.sh && echo "synclient HorizTwoFingerScroll=0\nsynclient TapButton2=0 TapButton3=0" >> /home/aria/touchpad.sh && gsettings set org.gnome.settings-daemon.peripherals.input-devices hotplug-command "/home/aria/touchpad.sh" && printf "${grn}[PASS]${nrml} Done setting up synclient configurations\n" || printf "${red}[FAIL]${nrml} Could not set up synclient configurations\n"
+
 #Install paper theme
 #printf "${blu}[INFO]${nrml} installing paper theme...\n"
 #sudo add-apt-repository ppa:snwh/pulp && sudo apt-get update && sudo apt-get install paper-icon-#theme && sudo apt-get install paper-gtk-theme && sudo apt-get install paper-cursor-theme && #printf "${grn}[PASS]${nrml} Installed paper theme\n" || printf "${red}[FAIL]${nrml} Could not #install paper theme\n"

@@ -14,7 +14,7 @@ CURR_DIR=" ./"
 args=("$@")
 NUM_ARGS=$#
 NUM_OPS=3
-NUM_WITHOUT_OPS=2
+NUM_WITHOUT_OPS=1
 FILE_NAME=""
 ONLY_ONE=0
 
@@ -59,7 +59,14 @@ mget (){
   eval ${GET_COMMAND}
 }
 
+
 if [[ "$#" < "$NUM_WITHOUT_OPS" ]]; then
+  echo "Error: usage: mportal send/get <remote directory> <files> ..."
+  exit 1
+fi
+
+if [[ "$#" == "$NUM_WITHOUT_OPS" ]]; then
+  echo "Info: correct usage: mportal send/get <remote directory> <files> ..."
   echo -n "Enter remote directory: "
   read REMOTE_DIR
   REMOTE_LINK=" ${MARIO_LINK}:~/EE460N/${REMOTE_DIR}"
@@ -71,6 +78,9 @@ if [[ "$#" < "$NUM_OPS" ]]; then
   read FILE_NAME
   ONLY_ONE=1
 fi
+
+
+
 
 
 if [[ ($1 == ${SEND}  || $1 == ${SEND2}) ]]; then

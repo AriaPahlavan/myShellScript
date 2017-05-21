@@ -158,12 +158,16 @@ fi
 printf "${ylw}[WARN]${nrml} Continue seting up synclient settings? [Y/n] "
 read wish
 if [[ $wish == Y* ]]; then
+  printf "${blu}[INFO]${nrml} installing gnome-settings-daemon packages...\n"
+  sudo apt install gnome-settings-daemon \
+  || printf "${red}[ERROR]${nrml} Could not install gnome-settings-daemon packages\n"
+
   printf "${blu}[INFO]${nrml} setting up synclient configurations...\n"
-  touch ~/touchpad.sh && chmod +x ~/touchpad.sh \
-  && echo "synclient HorizTwoFingerScroll=0 VertTwoFingerScroll=1 HorizEdgeScroll=1 VertEdgeScroll=0 TapButton1=1 TapButton2=0 TapButton3=0" >> ~/touchpad.sh \
-  && gsettings set org.gnome.settings-daemon.peripherals.input-devices hotplug-command "~/touchpad.sh" \
+  echo "synclient HorizTwoFingerScroll=0 VertTwoFingerScroll=1 HorizEdgeScroll=1 VertEdgeScroll=0 TapButton1=1 TapButton2=0 TapButton3=0 VertScrollDelta=119" > /home/aria/touchpad_settings.sh \
+  && chmod +x /home/aria/touchpad_settings.sh \
+  && gsettings set org.gnome.settings-daemon.peripherals.input-devices hotplug-command "/home/aria/touchpad_settings.sh" \
   && printf "${grn}[PASS]${nrml} Done setting up synclient configurations\n" \
   || printf "${red}[FAIL]${nrml} Could not set up synclient configurations\n"
 fi
 
-printf "${blu}[INFO]${nrml} Setup is done.\n"
+printf "${blu}[INFO]${nrml} Ubuntu initial setup is done.\n"

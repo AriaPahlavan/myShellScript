@@ -105,6 +105,7 @@ read wish
 if [[ $wish == Y* ]]; then
   printf "${blu}[INFO]${nrml} installing oh my zsh!...\n"
   sudo apt install zsh \
+  && sudo apt install curl \
   && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
   && printf "${grn}[PASS]${nrml} Installed oh my zsh!\n" \
   || printf "${red}[FAIL]${nrml} Could not install oh my zsh!\n"
